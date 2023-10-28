@@ -7,9 +7,11 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { PrismaService } from './services/prisma.service';
 import { AuthModule } from './guards/auth/auth.module';
 import { AppController } from './app.controller';
+import { CompaniesModule } from './companies/companies.module';
+import { CourtsModule } from './courts/courts.module';
 
 @Module({
-  imports: [UsersModule, AuthModule],
+  imports: [UsersModule, AuthModule, CompaniesModule, CourtsModule],
   controllers: [AppController],
   providers: [
     PrismaService,

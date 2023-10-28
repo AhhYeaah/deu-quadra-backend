@@ -28,3 +28,35 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
+
+model Court {
+  courtId     Int       @id @default(autoincrement())
+  imageURL    String
+  name        String
+  price       Int
+  description String
+  rating      Int
+  maxCapacity Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  companies Company @relation(fields: [companyId], references: [companyId])
+  companyId Int
+}
+
+model Company {
+  companyId      Int     @id @default(autoincrement())
+  imageURL       String
+  name           String
+  description    String
+  hashedPassword String
+  emailToContact String
+  street         String
+  district       String
+  number         String
+  cep            String
+  long           String
+  lat            String
+  courts         Court[]
+}
