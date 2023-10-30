@@ -1,14 +1,11 @@
 export class CompanyEntity {
-  companyId: number;
-  imageURL: string;
-  name: string;
-  description: string;
-  hashedPassword: string;
-  emailToContact: string;
-  street: string;
-  district: string;
-  number: string;
-  cep: string;
-  long: string;
-  lat: string;
+  idEmpresa: number;
+  nome: string;
+  rua: string;
+  bairro: string;
+  numero: string;
+  lat: number;
+  lon: number;
+  cidadeIdCidade: number;
+  usuarioLocadorIdUsuarioLocador: number;
 }

@@ -83,7 +83,7 @@ export class UsersController {
 
     return {
       accessToken: this.jwtService.sign<TokenType.AccessToken>(
-        { sub: user.userId },
+        { sub: user.identificador },
         TokenType.AccessToken,
       ),
     };

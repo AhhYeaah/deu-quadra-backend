@@ -5,9 +5,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+model Convidado {
+    idConvidado Int @id @default(autoincrement())
+
+    nome  String
+    email String?
+    cpf   String?
+
+    Reserva          Reserva? @relation(fields: [reservaIdReserva], references: [idReserva])
+    reservaIdReserva Int?
 }
 
 enum Roles {
@@ -16,7 +28,7 @@ enum Roles {
 }
 
 model User {
-  userId Int @id @default(autoincrement())
+  identificador Int @id @default(autoincrement())
 
   name           String
   email          String  @unique
@@ -27,36 +39,157 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  Reserva Reserva []
 }
 
-model Court {
-  courtId     Int       @id @default(autoincrement())
-  imageURL    String
-  name        String
-  price       Int
-  description String
-  rating      Int
-  maxCapacity Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+model Reserva {
+    idReserva Int @id @default(autoincrement())
 
-  companies Company @relation(fields: [companyId], references: [companyId])
-  companyId Int
+    nome String?
+
+    startDate DateTime
+    endDate   DateTime
+
+    User              User @relation(fields: [userIdentificador], references: [identificador])
+    userIdentificador Int
+
+    Convidado      Convidado[]
+    ReservaEspaco  ReservaEspaco[]
+    ReservaServico ReservaServico[]
 }
 
-model Company {
-  companyId      Int     @id @default(autoincrement())
-  imageURL       String
-  name           String
-  description    String
-  hashedPassword String
-  emailToContact String
-  street         String
-  district       String
-  number         String
-  cep            String
-  long           String
-  lat            String
-  courts         Court[]
+model ReservaEspaco {
+    idReservaEspaco Int @id @default(autoincrement())
+
+    espaco         Espaco @relation(fields: [espacoIdEspaco], references: [idEspaco])
+    espacoIdEspaco Int
+
+    reserva          Reserva @relation(fields: [reservaIdReserva], references: [idReserva])
+    reservaIdReserva Int
+}
+
+model Espaco {
+    idEspaco Int @id @default(autoincrement())
+
+    nome      String
+    tipo      String
+    imagemUrl String?
+
+    preco     String
+    descricao String?
+
+    ReservaEspaco    ReservaEspaco[]
+    Empresa          Empresa         @relation(fields: [empresaIdEmpresa], references: [idEmpresa])
+    empresaIdEmpresa Int
+}
+
+model ReservaServico {
+    idServico Int @id @default(autoincrement())
+
+    quantidade Int
+
+    reserva          Reserva @relation(fields: [reservaIdReserva], references: [idReserva])
+    Servico          Servico @relation(fields: [servicoIdServico], references: [idServico])
+    servicoIdServico Int
+    reservaIdReserva Int
+}
+
+model Servico {
+    idServico Int @id @default(autoincrement())
+
+    nome        String
+    tipoServico String
+    imagemUrl   String?
+
+    preco      Decimal @db.Decimal(11, 2)
+    descricao  String?
+    quantidade Int
+
+    Empresa          Empresa          @relation(fields: [empresaIdEmpresa], references: [idEmpresa])
+    empresaIdEmpresa Int
+    ReservaServico   ReservaServico[]
+}
+
+model Cidade {
+    idCidade Int @id @default(autoincrement())
+
+    nome String
+
+    Estado         Estado    @relation(fields: [estadoIdEstado], references: [idEstado])
+    estadoIdEstado Int
+    Empresa        Empresa[]
+}
+
+model Estado {
+    idEstado Int @id @default(autoincrement())
+
+    nome String
+    uf   String
+
+    cidades Cidade[]
+}
+
+model Empresa {
+    idEmpresa Int    @id @default(autoincrement())
+    nome      String
+
+    rua    String
+    bairro String
+    numero String
+
+    cidade         Cidade @relation(fields: [cidadeIdCidade], references: [idCidade])
+    cidadeIdCidade Int
+
+    lat Decimal @db.Decimal(10, 8)
+    lon Decimal @db.Decimal(10, 8)
+
+    quadras Quadra[]
+
+    servicos                       Servico[]
+    espacos                        Espaco[]
+    UsuarioLocador                 UsuarioLocador @relation(fields: [usuarioLocadorIdUsuarioLocador], references: [idUsuarioLocador])
+    usuarioLocadorIdUsuarioLocador Int
+}
+
+model UsuarioLocador {
+    idUsuarioLocador Int    @id @default(autoincrement())
+    identificador    String
+
+    nome      String
+    email     String  @unique
+    password  String
+    avatarUrl String?
+
+    empresas Empresa[]
+}
+
+model Quadra {
+    idQuadra Int @id @default(autoincrement())
+
+    nome      String
+    imagemUrl String
+    preco     Decimal @db.Decimal(11, 2)
+    descricao String?
+
+    QuadraModalidade QuadraModalidade[]
+    Empresa          Empresa?           @relation(fields: [empresaIdEmpresa], references: [idEmpresa])
+    empresaIdEmpresa Int?
+}
+
+model Modalidade {
+    idModalidade Int @id @default(autoincrement())
+
+    nome             String
+    QuadraModalidade QuadraModalidade[]
+}
+
+model QuadraModalidade {
+    idQuadraModalidade Int @id @default(autoincrement())
+
+    quadra         Quadra @relation(fields: [quadraIdQuadra], references: [idQuadra])
+    quadraIdQuadra Int
+
+    modalidade             Modalidade @relation(fields: [modalidadeIdModalidade], references: [idModalidade])
+    modalidadeIdModalidade Int
 }

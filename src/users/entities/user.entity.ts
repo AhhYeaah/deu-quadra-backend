@@ -1,7 +1,7 @@
 import { Roles } from '@prisma/client';
 
 export class UserEntity {
-  userId: number;
+  identificador: number;
   name: string;
   email: string;
   hashedPassword: string;

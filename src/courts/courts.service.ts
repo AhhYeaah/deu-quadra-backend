@@ -8,18 +8,18 @@ export class CourtsService {
   constructor(private prisma: PrismaService) {}
 
   create(createCourtDto: CreateCourtDto) {
-    return this.prisma.court.create({
-      data: { ...createCourtDto },
+    return this.prisma.quadra.create({
+      data: { ...createCourtDto},
     });  }
 
   async findAll() {
-    return await this.prisma.court.findMany()
+    return await this.prisma.quadra.findMany()
   }
 
   async findOne(id: number) {
-    return await this.prisma.court.findFirst({
+    return await this.prisma.quadra.findFirst({
       where: {
-        companyId: id,
+        empresaIdEmpresa: id,
       },
     });;  }
 
