@@ -5,29 +5,74 @@ import { PrismaService } from 'src/services/prisma.service';
 @Injectable()
 export class CourtsService {
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { 
+
+   
+    
+  }
 
   create(createCourtDto: CreateCourtDto) {
     return this.prisma.quadra.create({
-      data: { ...createCourtDto},
-    });  }
+      data: { ...createCourtDto },
+    });
+  }
 
   async findAll() {
     return await this.prisma.quadra.findMany()
   }
 
-  async findOne(id: number) {
-    return await this.prisma.quadra.findFirst({
-      where: {
-        empresaIdEmpresa: id,
-      },
-    });;  }
+  async findByProximity([minLon,minLat,maxLon,maxLat]: number[]){
+      return await this.prisma.quadra.findMany({
+        where: {
+          Empresa: {
+            lon: {
+              gte: minLon,
+              lte: maxLon
+            }
+            ,
+            lat: {
+              gte: minLat,
+              lte: maxLat
+            }
+          }
+        },
+        select: {
+          nome: true,
+          preco: true,
+          descricao: true,
+          idQuadra:true,
+          imagemUrl: true,
+          Empresa: {
+            select: {
+              nome: true,
+              idEmpresa: true,
+              rua: true,
+              lat: true,
+              lon: true,
+              bairro: true,
+              numero: true,
+              
+            }
+          }
+        }
+      })
+    }
+    
 
-  // update(id: number, updateCourtDto: UpdateCourtDto) {
-  //   return `This action updates a #${id} court`;
-  // }
+    async findOne(id: number) {
+      return await this.prisma.quadra.findFirst({
+        where: {
+          empresaIdEmpresa: id,
+        },
+      });
+    }
+    
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} court`;
-  // }
-}
+    // update(id: number, updateCourtDto: UpdateCourtDto) {
+    //   return `This action updates a #${id} court`;
+    // }
+
+    // remove(id: number) {
+    //   return `This action removes a #${id} court`;
+    // }
+  }
