@@ -18,7 +18,7 @@ export const FindByProximitySchema = Validator.object({
   }),
 
   properties: Validator.object({
-    distanceInKillometers: Validator.number().max(50).min(10)
+    distanceInKillometers: Validator.number().max(20).min(1)
   })
 })
   .options({ presence: 'required' })
