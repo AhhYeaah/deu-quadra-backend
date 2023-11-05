@@ -86,25 +86,13 @@ export class UsersController {
         { sub: user.identificador },
         TokenType.AccessToken,
       ),
+      refreshToken: this.jwtService.sign<TokenType.RefreshToken>(
+        { sub: user.identificador },
+        TokenType.RefreshToken,
+      ),
     };
   }
 
-  @Get()
-  @Roles([RolesEnum.USER])
-  @Docs({
-    operation: {
-      description: 'Retorna um Hello World para usuários',
-    },
-    responses: [
-      {
-        status: 200,
-        description: 'Sucesso',
-      },
-    ],
-  })
-  helloAuthenticatedUser() {
-    return 'Hello World!';
-  }
 
   @Get('admin')
   @Roles([RolesEnum.ADMIN])
