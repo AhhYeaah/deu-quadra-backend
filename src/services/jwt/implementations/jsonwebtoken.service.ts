@@ -30,11 +30,17 @@ export class JsonWebTokenService implements JWTService, OnModuleInit {
   sign<type extends TokenType>(payload: any, tokenType: type): string {
     const typ: Record<TokenType, TokenTypeIdentifier> = {
       AccessToken: TokenTypeIdentifier.AccessToken,
+      RefreshToken: TokenTypeIdentifier.RefreshToken
+    };
+
+    const expiresIn: Record<TokenType, number> = {
+      AccessToken: 3600,
+      RefreshToken: 2629800
     };
 
     return jwt.sign(payload, this.secret, {
       ...this.options,
-      expiresIn: 3600,
+      expiresIn: expiresIn[tokenType],
       jwtid: uuid(),
       header: {
         alg: 'HS256',

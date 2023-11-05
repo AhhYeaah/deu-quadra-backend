@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
 
     const user = await this.prismaService.user.findFirst({
       where: {
-        AND: [{ userId: Number(result.sub) }, { deletedAt: null }],
+        AND: [{ identificador: Number(result.sub) }, { deletedAt: null }],
       },
     });
 

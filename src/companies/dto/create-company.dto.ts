@@ -4,84 +4,59 @@ import Validator from 'src/utils/Validator';
 export class CreateCompanyDto {
 
   @ApiProperty({
-    description: 'Endereco da imagem',
-    example: 'www.imagens.com/image.jpg',
-  })
-  imageURL: string;
-
-  @ApiProperty({
     description: 'O nome da Empresa',
     minLength: 8,
     example: 'Quadras do Ze',
   })
-  name: string;
-
-  @ApiProperty({
-    description: 'Descricao da empresa',
-    minLength: 8,
-    example: 'Empresa no ramo ha 5 anos..',
-  })
-  description: string;
-
-  @ApiProperty({
-    description: 'Uma senha de tamanho maior que 8 carácteres.',
-    minLength: 8,
-    example: 'senhaforte123',
-  })
-  hashedPassword: string;
-
-  @ApiProperty({
-    description: 'Um email válido para contato.',
-    minLength: 8,
-    example: 'email@email.com',
-  })
-  emailToContact: string;
+  nome: string;
 
   @ApiProperty({
     description: 'Endereco do empreendimento',
     minLength: 8,
     example: 'Rua da Alegria',
   })
-  street: string;
+  rua: string;
 
   @ApiProperty({
     description: 'Distrito do empreendimento',
     minLength: 8,
     example: 'Itaquera',
   })
-  district: string;
+  bairro: string;
 
   @ApiProperty({
     description: 'Numero do endereco',
-    minLength: 8,
     example: 200,
   })
-  number: string;
+  numero: string;
 
   @ApiProperty({
-    description: 'CEP do empreendimento',
-    minLength: 8,
-    example: '08253000',
+    description: 'id da Cidade',
+    example: 1,
   })
-  cep: string;
-
-  @ApiProperty({
-    description: 'Longitude que esta localizado o empreendimento',
-    minLength: 8,
-    example: '-46.596698188599206',
-  })
-  long: string;
+  cidadeIdCidade: number;
 
   @ApiProperty({
     description: 'Latitude que esta localizado o empreendimento',
-    minLength: 8,
     example: '-23.473715447380332',
   })
-  lat: string;
+  lat: number;
+
+  @ApiProperty({
+    description: 'Longitude que esta localizado o empreendimento',
+    example: '-46.596698188599206',
+  })
+  lon: number;
+  
+  @ApiProperty({
+    description: 'Id do locator',
+    example: 1,
+  })
+  usuarioLocadorIdUsuarioLocador: number;
 }
 
 export const CreateCompanySchema = Validator.object({
-  name: Validator.string(),
+  nome: Validator.string(),
   //email: Validator.string().email(),
   //password: Validator.string().min(8),
 })

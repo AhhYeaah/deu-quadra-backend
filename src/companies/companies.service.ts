@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { PrismaService } from 'src/services/prisma.service';
 import { count } from 'console';
+import { CreateCourtDto } from 'src/courts/dto/create-court.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -9,23 +10,23 @@ export class CompaniesService {
   constructor(private prisma: PrismaService) {}
 
   async createCompany(createCompanyDto: CreateCompanyDto) {
-      return this.prisma.company.create({       
-        data: { ...createCompanyDto },
+      return this.prisma.empresa.create({       
+        data: { ...createCompanyDto},
       });
   }
 
   async findAll() {
-    return await this.prisma.company.findMany({
+    return await this.prisma.empresa.findMany({
       include: {
-        courts: true,
+        quadras: true,
       },
     });;
     }
 
   async findOne(id: number) {
-    return await this.prisma.company.findFirst({
+    return await this.prisma.empresa.findFirst({
       where: {
-        companyId: id,
+        idEmpresa: id,
       },
     });;
   }
